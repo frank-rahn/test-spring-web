@@ -3,6 +3,7 @@
 	<name>test-spring-web</name>
 	<comment></comment>
 	<projects>
+		<project>test-spring-jpa</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
