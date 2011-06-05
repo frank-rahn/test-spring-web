@@ -28,7 +28,7 @@ public class SampleController {
 	 */
 	@RequestMapping("/sample")
 	public void sample(Model model) {
-		logger.info("Die Methode sample() wurde aufgerufen.");
+		logger.info("Die Methode SampleController.sample() wurde aufgerufen.");
 		model.addAttribute("counter", ++counter);
 	}
 
@@ -37,7 +37,7 @@ public class SampleController {
 	 */
 	@RequestMapping("/erzeugeFehler")
 	public void createError() {
-		logger.info("Die Methode createError() wurde aufgerufen.");
+		logger.info("Die Methode SampleController.createError() wurde aufgerufen.");
 		throw new NullPointerException("Ein Fehler ist aufgetreten!");
 	}
 
