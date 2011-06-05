@@ -20,6 +20,7 @@
 	<context:load-time-weaver/>
 
 	<!-- Die projektspezifischen Konfigurationen laden -->
-	<!--import resource="classpath:/de/rahn/web/application.xml"/-->
+	<import resource="classpath:/META-INF/spring/db.xml" />
+	<import resource="classpath:/de/rahn/services/drivers/drivers.xml" />
 
 </beans>
