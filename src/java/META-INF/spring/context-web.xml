@@ -11,13 +11,13 @@
 	<description>Dieses ist die zentrale Konfiguration für die Anwendungen.</description>
 
 	<!-- Enabling des AspectJ Support -->
-	<aop:aspectj-autoproxy />
+	<aop:aspectj-autoproxy proxy-target-class="true" />
 
 	<!-- Das Verwenden von allgemeinen Annotationen ermöglichen -->
 	<context:annotation-config />
 
 	<!-- Verwenden des Load-Time-Weaver -->
-	<context:load-time-weaver/>
+	<context:load-time-weaver />
 
 	<!-- Die projektspezifischen Konfigurationen laden -->
 	<import resource="classpath:/META-INF/spring/db.xml" />

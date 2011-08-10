@@ -1,5 +1,7 @@
 package de.rahn.web.spring;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
@@ -7,7 +9,6 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,7 +34,7 @@ import de.rahn.services.drivers.entity.Driver;
 @RequestMapping("/drivers")
 public class DriversController {
 
-	private static final Logger logger = LoggerFactory.getLogger(DriversController.class);
+	private static final Logger logger = getLogger(DriversController.class);
 
 	@Autowired
 	private Drivers drivers;
@@ -57,7 +58,10 @@ public class DriversController {
 	 */
 	@ModelAttribute("driver")
 	public Driver handleRequest(@RequestParam(required = false) Long id) {
-		logger.info("Die Methode DriversController.handleRequest() wurde aufgerufen. id={}", id);
+		logger
+			.info(
+				"Die Methode DriversController.handleRequest() wurde aufgerufen. id={}",
+				id);
 
 		if (id != null) {
 			return drivers.getDriver(id);
@@ -73,7 +77,8 @@ public class DriversController {
 	@RequestMapping(method = RequestMethod.GET)
 	@ModelAttribute("drivers")
 	public List<Driver> listDriver() {
-		logger.info("Die Methode DriversController.listDriver() wurde aufgerufen.");
+		logger
+			.info("Die Methode DriversController.listDriver() wurde aufgerufen.");
 
 		return drivers.getDrivers();
 	}
@@ -85,7 +90,10 @@ public class DriversController {
 	 */
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public String editDriver(Driver driver) {
-		logger.info("Die Methode DriversController.editDriver() wurde aufgerufen. driver={}", driver);
+		logger
+			.info(
+				"Die Methode DriversController.editDriver() wurde aufgerufen. driver={}",
+				driver);
 		return "edit";
 	}
 
@@ -98,7 +106,10 @@ public class DriversController {
 	@RequestMapping(method = RequestMethod.POST)
 	@ModelAttribute("drivers")
 	public List<Driver> saveDriver(@Valid Driver driver, Model model) {
-		logger.info("Die Methode DriversController.saveDriver() wurde mit aufgerufen. driver={}", driver);
+		logger
+			.info(
+				"Die Methode DriversController.saveDriver() wurde mit aufgerufen. driver={}",
+				driver);
 
 		if (driver.getId() == null) {
 			drivers.create(driver);
@@ -106,7 +117,8 @@ public class DriversController {
 			drivers.save(driver);
 		}
 
-		model.addAttribute("statusMessage", "Der Fahrer mit der Id " + driver.getId() + " wurde gespeichert.");
+		model.addAttribute("statusMessage",
+			"Der Fahrer mit der Id " + driver.getId() + " wurde gespeichert.");
 		return drivers.getDrivers();
 	}
 
