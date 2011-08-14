@@ -4,22 +4,30 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:aop="http://www.springframework.org/schema/aop"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop
+			http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/context
+			http://www.springframework.org/schema/context/spring-context.xsd
+	">
 
-	<description>Dieses ist die zentrale Konfiguration für die Anwendungen.</description>
+	<description>
+		Dieses ist die zentrale Konfiguration für die Anwendungen.
+	</description>
 
 	<!-- Enabling des AspectJ Support -->
-	<aop:aspectj-autoproxy />
+	<aop:aspectj-autoproxy proxy-target-class="true" />
 
 	<!-- Das Verwenden von allgemeinen Annotationen ermöglichen -->
 	<context:annotation-config />
 
 	<!-- Verwenden des Load-Time-Weaver -->
-	<context:load-time-weaver/>
+	<context:load-time-weaver aspectj-weaving="on" />
 
 	<!-- Die projektspezifischen Konfigurationen laden -->
-	<!--import resource="classpath:/de/rahn/web/application.xml"/-->
+	<!--import resource="classpath:/META-INF/spring/db.xml" /-->
+	<!--import resource="classpath:/de/rahn/services/drivers/drivers.xml" /-->
 
 </beans>

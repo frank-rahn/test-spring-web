@@ -1,10 +1,11 @@
 package de.rahn.web.spring;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -18,7 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class SampleController {
 
-	private static final Logger logger = LoggerFactory.getLogger(SampleController.class);
+	private static final Logger logger = getLogger(SampleController.class);
 
 	private int counter = 0;
 
@@ -28,7 +29,7 @@ public class SampleController {
 	 */
 	@RequestMapping("/sample")
 	public void sample(Model model) {
-		logger.info("Die Methode sample() wurde aufgerufen.");
+		logger.info("Die Methode SampleController.sample() wurde aufgerufen.");
 		model.addAttribute("counter", ++counter);
 	}
 
@@ -37,7 +38,8 @@ public class SampleController {
 	 */
 	@RequestMapping("/erzeugeFehler")
 	public void createError() {
-		logger.info("Die Methode createError() wurde aufgerufen.");
+		logger
+			.info("Die Methode SampleController.createError() wurde aufgerufen.");
 		throw new NullPointerException("Ein Fehler ist aufgetreten!");
 	}
 
