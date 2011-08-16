@@ -26,8 +26,7 @@ public class SampleControllerTest {
 	}
 
 	/**
-	 * Test method for
-	 * {@link SampleController#sample(org.springframework.ui.Model)} .
+	 * Test method for {@link SampleController#sample(Model)} .
 	 */
 	@Test
 	public void testSample() {
@@ -49,8 +48,7 @@ public class SampleControllerTest {
 	}
 
 	/**
-	 * Test method for
-	 * {@link SampleController#handleException(java.lang.Exception)} .
+	 * Test method for {@link SampleController#handleException(Exception)} .
 	 */
 	@Test
 	public void testHandleException() {
