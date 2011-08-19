@@ -18,12 +18,12 @@
 
 	<!-- Logger für Spring -->
 	<logger name="org.springframework">
-		<level value="info" />
+		<level value="warn" />
 	</logger>
 
 	<!-- Der Root Logger -->
 	<root>
-		<priority value="warn" />
+		<priority value="info" />
 		<appender-ref ref="console" />
 	</root>
 

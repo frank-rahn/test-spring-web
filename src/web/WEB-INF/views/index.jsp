@@ -12,6 +12,7 @@
 		<ul>
 			<li><a href="sample">Beispielseite</a></li>
 			<li><a href="erzeugeFehler">Fehlerseite</a></li>
+			<li><a href="info">Inhalt des ApplicationContext von Spring</a></li>
 			<li><a href="drivers">Fahrerverwaltung</a></li>
 		</ul>
 	</body>

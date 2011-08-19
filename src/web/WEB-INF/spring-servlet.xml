@@ -2,26 +2,46 @@
 
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
 	xmlns:mvc="http://www.springframework.org/schema/mvc"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop
+			http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/context
+			http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/mvc
+			http://www.springframework.org/schema/mvc/spring-mvc.xsd
+	">
 
-	<description>Dieses ist die zentrale Konfiguration für das Spring-Servlet.</description>
+	<description>
+		Dieses ist die zentrale Konfiguration für das Spring-Servlet.
+	</description>
+
+	<!-- Enabling des AspectJ Support -->
+	<aop:aspectj-autoproxy proxy-target-class="true" />
+
+	<!-- Verwenden des Load-Time-Weaver -->
+	<context:load-time-weaver aspectj-weaving="on" />
+
+	<!-- Das Verwenden von allgemeinen Annotationen ermöglichen -->
+	<context:annotation-config />
 
 	<!-- Schalte die Annotation für MVC ein -->
 	<mvc:annotation-driven />
 
-	<!-- Die Definition zum Mapping von Adressen auf Views -->
-	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
-		<property name="prefix" value="/WEB-INF/views/" />
-		<property name="suffix" value=".jsp" />
-	</bean>
-
 	<!-- Die Definition für den Aufruf der Index-Seite -->
 	<mvc:view-controller path="/" view-name="index" />
+
+	<!-- Die Definition zum Mapping von Adressen auf Views -->
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver"
+		p:suffix=".jsp"
+		p:prefix="/WEB-INF/views/"
+		p:viewClass="org.springframework.web.servlet.view.JstlView" />
 
 	<!-- Laden der Controllers -->
 	<import resource="classpath:/de/rahn/web/application.xml" />
