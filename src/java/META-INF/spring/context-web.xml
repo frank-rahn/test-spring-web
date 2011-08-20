@@ -28,6 +28,7 @@
 
 	<!-- Die projektspezifischen Konfigurationen laden -->
 	<import resource="classpath:/META-INF/spring/db.xml" />
+	<import resource="classpath:/de/rahn/validation/validation.xml" />
 	<import resource="classpath:/de/rahn/services/drivers/drivers.xml" />
 
 </beans>
