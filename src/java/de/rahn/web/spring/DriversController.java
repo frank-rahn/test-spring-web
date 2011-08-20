@@ -6,17 +6,11 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
 
-import javax.validation.Valid;
-
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.DataBinder;
-import org.springframework.validation.Validator;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -38,18 +32,6 @@ public class DriversController {
 
 	@Autowired
 	private Drivers drivers;
-
-	@Autowired
-	private Validator validator;
-
-	/**
-	 * Konfiguriere den {@link DataBinder}.
-	 * @param binder der {@link DataBinder} für das Web
-	 */
-	@InitBinder
-	protected void initBinder(WebDataBinder binder) {
-		binder.setValidator(validator);
-	}
 
 	/**
 	 * Diese Methode wird vor jedem Request aufgerufen.
@@ -105,7 +87,7 @@ public class DriversController {
 	 */
 	@RequestMapping(method = RequestMethod.POST)
 	@ModelAttribute("drivers")
-	public List<Driver> saveDriver(@Valid Driver driver, Model model) {
+	public List<Driver> saveDriver(Driver driver, Model model) {
 		logger
 			.info(
 				"Die Methode DriversController.saveDriver() wurde mit aufgerufen. driver={}",
