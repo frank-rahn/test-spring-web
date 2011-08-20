@@ -1,0 +1,12 @@
+/* the humans responsible & colophon */
+/* humanstxt.org */
+
+/* TEAM */
+Chef: Frank W. Rahn
+Contact: http://www.frank-rahn.de/contact.html
+Twitter: @frank_rahn
+From: Cologne, Germany
+
+/* SITE */
+Standards: XHTML
+Tools: Spring MVC
