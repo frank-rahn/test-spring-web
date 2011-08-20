@@ -21,9 +21,23 @@
 		<level value="warn" />
 	</logger>
 
+	<!-- Logger für Hibernate -->
+	<logger name="org.hibernate">
+		<level value="warn" />
+	</logger>
+	<logger name="org.hibernate.SQL">
+		<level value="debug" />
+	</logger>
+	<logger name="org.hibernate.tool.hbm2ddl">
+		<level value="debug" />
+	</logger>
+	<logger name="org.hibernate.validation">
+		<level value="debug" />
+	</logger>
+
 	<!-- Der Root Logger -->
 	<root>
-		<priority value="info" />
+		<level value="warn" />
 		<appender-ref ref="console" />
 	</root>
 
