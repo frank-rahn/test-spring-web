@@ -33,6 +33,16 @@
 	<!-- Schalte die Annotation für MVC ein -->
 	<mvc:annotation-driven />
 
+	<!-- Diese Interceptoren werden auf die Request-Handler angewendet -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/drivers" />
+			<mvc:mapping path="/drivers/edit" />
+			<bean p:entityManagerFactory-ref="entityManagerFactory"
+				class="org.springframework.orm.jpa.support.OpenEntityManagerInViewInterceptor" />
+			</mvc:interceptor>
+	</mvc:interceptors>
+
 	<!-- Die Definition für den Aufruf der Index-Seite -->
 	<mvc:view-controller path="/" view-name="index" />
 

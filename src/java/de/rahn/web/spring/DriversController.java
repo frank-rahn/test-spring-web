@@ -100,7 +100,9 @@ public class DriversController {
 		}
 
 		model.addAttribute("statusMessage",
-			"Der Fahrer mit der Id " + driver.getId() + " wurde gespeichert.");
+			"Der Fahrer mit der Id " + driver.getId()
+				+ " wurde gespeichert.<br/>Anzahl Autos des Fahrers "
+				+ driver.getCars().size() + ".");
 		return drivers.getDrivers();
 	}
 
