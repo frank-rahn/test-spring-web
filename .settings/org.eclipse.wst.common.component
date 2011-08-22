@@ -3,9 +3,6 @@
     <wb-module deploy-name="test-spring-web">
         <wb-resource deploy-path="/" source-path="/src/web"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/java"/>
-        <dependent-module archiveName="test-spring-jpa.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/test-spring-jpa/test-spring-jpa">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <property name="context-root" value="test-spring-web"/>
         <property name="java-output-path" value="/test-spring-web/build/classes"/>
     </wb-module>

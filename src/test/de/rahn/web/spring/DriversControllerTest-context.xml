@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans.xsd
+	">
+
+	<description>
+		Dieses ist die Test-Konfiguration für den DriversController.
+	</description>
+
+	<!-- Die Testbeans -->
+	<bean id="drivers" class="org.easymock.EasyMock" factory-method="createMock">
+		<constructor-arg value="de.rahn.services.drivers.Drivers" />
+	</bean>
+	<bean class="de.rahn.web.spring.DriversController" />
+
+</beans>
