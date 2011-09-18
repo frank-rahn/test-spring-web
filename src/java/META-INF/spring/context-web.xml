@@ -4,6 +4,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:aop="http://www.springframework.org/schema/aop"
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:sec="http://www.springframework.org/schema/security"
 	xsi:schemaLocation="
 		http://www.springframework.org/schema/beans
 			http://www.springframework.org/schema/beans/spring-beans.xsd
@@ -11,6 +12,8 @@
 			http://www.springframework.org/schema/aop/spring-aop.xsd
 		http://www.springframework.org/schema/context
 			http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/security
+			http://www.springframework.org/schema/security/spring-security.xsd
 	">
 
 	<description>
@@ -26,8 +29,49 @@
 	<!-- Verwenden des Load-Time-Weaver -->
 	<context:load-time-weaver aspectj-weaving="on" />
 
+	<!-- Den Authentifikationsmanager definieren -->
+	<sec:authentication-manager>
+		<sec:authentication-provider>
+			<sec:password-encoder hash="plaintext" />
+			<sec:user-service>
+				<sec:user name="admin" password="admin"
+					authorities="ROLE_USER, ROLE_ADMIN" />
+				<sec:user name="frank" password="frank"
+					authorities="ROLE_USER" />
+			</sec:user-service>
+		</sec:authentication-provider>
+	</sec:authentication-manager>
+
+	<!-- Konfigurieren der HTTP Security -->
+	<sec:http auto-config="true" use-expressions="true">
+		<!-- Zugriff auf /login für alle erlauben -->
+		<sec:intercept-url pattern="/login" access="permitAll" />
+
+		<!-- Zugriff auf /** auf Benutzer mit der
+			Rolle ROLE_USER einschränken -->
+		<sec:intercept-url pattern="/**" access="hasRole('ROLE_USER')" />
+
+		<!-- Formular-basiertes Login konfigurieren -->
+		<sec:form-login login-page="/login"
+			authentication-failure-url="/login?login_error=true" />
+
+		<!-- Logout Seite definieren -->
+		<sec:logout logout-url="/logout" />
+
+		<!-- Session Timeout Seite setzen und
+			Session Fixation Attack Protection einschalten -->
+		<sec:session-management invalid-session-url="/login?timeout=true"
+			session-fixation-protection="migrateSession">
+
+			<!-- Maxmale Anzahl von Session per User (Doppelanmeldung) -->
+			<sec:concurrency-control max-sessions="1"
+				error-if-maximum-exceeded="true" />
+		</sec:session-management>
+	</sec:http>
+
 	<!-- Die projektspezifischen Konfigurationen laden -->
 	<import resource="classpath:/META-INF/spring/db.xml" />
+	<import resource="classpath:/META-INF/spring/security.xml" />
 	<import resource="classpath:/de/rahn/validation/validation.xml" />
 	<import resource="classpath:/de/rahn/services/drivers/drivers.xml" />
 

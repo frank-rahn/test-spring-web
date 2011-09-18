@@ -41,6 +41,22 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 
+	<filter>
+		<description>Der Filter für die Security</description>
+		<filter-name>securityFilter</filter-name>
+		<filter-class>
+			org.springframework.web.filter.DelegatingFilterProxy
+		</filter-class>
+		<init-param>
+			<param-name>targetBeanName</param-name>
+			<param-value>springSecurityFilterChain</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>securityFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
 	<listener>
 		<description>
 			Der Listener für die Konfiguration des Logging
@@ -56,6 +72,15 @@
 		</description>
 		<listener-class>
 			org.springframework.web.context.ContextLoaderListener
+		</listener-class>
+	</listener>
+	<listener>
+		<description>
+  			Dieser Listener leitet die Event des HttpSessionListener an den
+  			ApplicationContext weiter.
+		</description>
+		<listener-class>
+			org.springframework.security.web.session.HttpSessionEventPublisher
 		</listener-class>
 	</listener>
 

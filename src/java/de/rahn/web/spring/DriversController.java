@@ -8,6 +8,8 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -40,10 +42,15 @@ public class DriversController {
 	 */
 	@ModelAttribute("driver")
 	public Driver handleRequest(@RequestParam(required = false) Long id) {
+		Authentication authentication =
+			SecurityContextHolder.getContext().getAuthentication();
+		Object principal =
+			authentication == null ? null : authentication.getPrincipal();
+
 		logger
 			.info(
-				"Die Methode DriversController.handleRequest() wurde aufgerufen. id={}",
-				id);
+				"Die Methode DriversController.handleRequest() wurde aufgerufen. id={}, user={}",
+				id, principal);
 
 		if (id != null) {
 			return drivers.getDriver(id);

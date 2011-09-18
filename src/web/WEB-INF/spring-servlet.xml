@@ -6,6 +6,7 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:p="http://www.springframework.org/schema/p"
 	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:sec="http://www.springframework.org/schema/security"
 	xsi:schemaLocation="
 		http://www.springframework.org/schema/beans
 			http://www.springframework.org/schema/beans/spring-beans.xsd
@@ -15,6 +16,8 @@
 			http://www.springframework.org/schema/context/spring-context.xsd
 		http://www.springframework.org/schema/mvc
 			http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/security
+			http://www.springframework.org/schema/security/spring-security.xsd
 	">
 
 	<description>
@@ -52,6 +55,11 @@
 		p:suffix=".jsp"
 		p:prefix="/WEB-INF/views/"
 		p:viewClass="org.springframework.web.servlet.view.JstlView" />
+
+	<!-- Die Annotations-basierende Security einschalten -->
+	<sec:global-method-security mode="aspectj"
+		pre-post-annotations="enabled"
+		proxy-target-class="true" />
 
 	<!-- Laden der Controllers -->
 	<import resource="classpath:/de/rahn/web/application.xml" />
