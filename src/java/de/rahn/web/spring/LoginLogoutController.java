@@ -15,26 +15,12 @@ public class LoginLogoutController {
 
 	private static final Logger logger = getLogger(LoginLogoutController.class);
 
-	// @Autowired
-	// private HttpServletRequest request;
-
 	/**
 	 * Die Methode für das Login.
 	 */
 	@RequestMapping("/login")
 	public void login() {
 		logger.info("Benutzer hat die Anmeldeseite aufgerufen.");
-	}
-
-	/**
-	 * Die Methode für das Logout.
-	 */
-	@RequestMapping("/logouta")
-	public void logout() throws Exception {
-		logger.info("Benutzer hat die Abmeldeseite aufgerufen.");
-		// HttpServletResponse response
-		// request.getSession().invalidate();
-		// response.sendRedirect(request.getContextPath());
 	}
 
 }
