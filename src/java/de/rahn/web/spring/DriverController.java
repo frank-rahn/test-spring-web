@@ -2,8 +2,11 @@ package de.rahn.web.spring;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.util.UriTemplate;
 
 import de.rahn.services.drivers.Drivers;
 import de.rahn.services.drivers.entity.Driver;
@@ -52,26 +56,48 @@ public class DriverController {
 	 * Speichere einen Fahrer.
 	 * @param id die Id eines Fahrers
 	 * @param driver der aktuelle Fahrer
+	 * @param request der aktuelle Request
 	 * @return der geänderte Fahrer
 	 */
 	@RequestMapping(method = RequestMethod.PUT)
-	@ResponseBody
-	public Driver saveDriver(@PathVariable long id, @RequestBody Driver driver) {
+	public ResponseEntity<Driver> saveDriver(@PathVariable long id,
+		@RequestBody Driver driver, HttpServletRequest request) {
 		logger
 			.info(
 				"Die Methode DriverController.saveDriver() wurde mit aufgerufen. Id={}, driver={}",
 				id, driver);
 
-		if (driver.getId() == null) {
-			// 501 Not Implemented
-			throw new RuntimeException("Dieses Funktion wird nicht unterstützt");
-			// 201 Created + Location
-		} else if (!driver.getId().equals(id)) {
-			// 409 Conflict
-			throw new RuntimeException("URI und Fahrer stimmen nicht überein");
+		if (driver.getId() != null && !driver.getId().equals(id)) {
+			// URI und Fahrer stimmen nicht überein => 409 Conflict
+			return new ResponseEntity<Driver>(HttpStatus.CONFLICT);
 		}
 
-		return drivers.save(driver);
+		HttpHeaders headers = null;
+		HttpStatus status;
+		if (driver.getId() == null) {
+			// Rückgabe: 201 Created + Location
+			status = HttpStatus.CREATED;
+			headers = new HttpHeaders();
+			driver.setId(id);
+		} else {
+			// Normaler Rückgabestatus
+			status = HttpStatus.OK;
+		}
+
+		// Speichere den Fahrer
+		driver = drivers.save(driver);
+
+		// Location erzeugen, wenn nötig
+		if (headers != null) {
+			String baseUrl =
+				String.format("%s://%s:%d%s/drivers/{id}", request.getScheme(),
+					request.getServerName(), request.getServerPort(),
+					request.getContextPath());
+			headers
+				.setLocation(new UriTemplate(baseUrl).expand(driver.getId()));
+		}
+
+		return new ResponseEntity<Driver>(driver, headers, status);
 	}
 
 	/**
