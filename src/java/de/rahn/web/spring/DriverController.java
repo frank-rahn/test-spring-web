@@ -4,6 +4,8 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,14 +35,17 @@ public class DriverController {
 	 * @return der existierende Fahrer
 	 */
 	@RequestMapping(method = RequestMethod.GET)
-	@ResponseBody
-	public Driver getDriver(@PathVariable long id) {
+	public ResponseEntity<Driver> getDriver(@PathVariable long id) {
 		logger
 			.info(
 				"Die Methode DriverController.getDriver() wurde mit aufgerufen. id={}",
 				id);
 
-		return drivers.getDriver(id);
+		Driver driver = drivers.getDriver(id);
+		if (driver == null) {
+			return new ResponseEntity<Driver>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<Driver>(driver, HttpStatus.OK);
 	}
 
 	/**
