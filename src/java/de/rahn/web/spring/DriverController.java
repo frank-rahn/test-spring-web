@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.util.UriTemplate;
 
 import de.rahn.services.drivers.Drivers;
@@ -106,15 +106,17 @@ public class DriverController {
 	 * @return der existierende Fahrer
 	 */
 	@RequestMapping(method = RequestMethod.DELETE)
-	@ResponseBody
-	public Driver deleteDriver(@PathVariable long id) {
+	@ResponseStatus(value = HttpStatus.NO_CONTENT)
+	public void deleteDriver(@PathVariable long id) {
 		logger
 			.info(
 				"Die Methode DriverController.deleteDriver() wurde mit aufgerufen. Id={}",
 				id);
 
-		// drivers.delete(id);
-		return drivers.getDriver(id);
+		Driver driver = drivers.getDriver(id);
+		if (driver != null) {
+			drivers.deleteDriver(id);
+		}
 	}
 
 }
