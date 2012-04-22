@@ -93,7 +93,7 @@ public class DriversControllerTest {
 		expect(drivers.getDrivers()).andReturn(listDriver);
 		replay(drivers);
 
-		List<Driver> testDrivers = controller.listDriver();
+		List<Driver> testDrivers = controller.listDriverForView();
 		assertNotNull("Controller hat kein Ergebnis geliefert", testDrivers);
 		assertSame("Die Ergebnisse sind unterschiedlich", listDriver,
 			testDrivers);
