@@ -37,7 +37,7 @@
 	<mvc:interceptors>
 		<mvc:interceptor>
 			<mvc:mapping path="/drivers" />
-			<mvc:mapping path="/drivers/edit" />
+			<mvc:mapping path="/drivers/*" />
 			<bean p:entityManagerFactory-ref="entityManagerFactory"
 				class="org.springframework.orm.jpa.support.OpenEntityManagerInViewInterceptor" />
 			</mvc:interceptor>
