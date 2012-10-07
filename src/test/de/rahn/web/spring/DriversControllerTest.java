@@ -55,7 +55,7 @@ public class DriversControllerTest {
 		driver.setFirstname("Frank");
 		driver.setName("Rahn");
 
-		listDriver = new ArrayList<Driver>();
+		listDriver = new ArrayList<>();
 		listDriver.add(driver);
 	}
 

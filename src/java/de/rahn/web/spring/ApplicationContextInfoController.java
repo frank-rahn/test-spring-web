@@ -55,7 +55,7 @@ public class ApplicationContextInfoController {
 		 */
 		public void addBean(List<String> bean) {
 			if (beans == null) {
-				beans = new ArrayList<List<String>>();
+				beans = new ArrayList<>();
 			}
 			beans.add(bean);
 		}
@@ -131,7 +131,7 @@ public class ApplicationContextInfoController {
 	@RequestMapping(method = RequestMethod.GET)
 	@ModelAttribute("appCtxs")
 	public List<AppCtx> showApplicationContextInfo() {
-		List<AppCtx> appCtxs = new ArrayList<AppCtx>();
+		List<AppCtx> appCtxs = new ArrayList<>();
 		ApplicationContext current = applicationContext;
 
 		// Ermitteln der verschachtelten ApplicationContexte
@@ -142,10 +142,9 @@ public class ApplicationContextInfoController {
 			appCtxs.add(appCtx);
 
 			// Ermittlung der geladenen Beans
-			Map<String, List<String>> beans =
-				new HashMap<String, List<String>>();
+			Map<String, List<String>> beans = new HashMap<>();
 			for (String name : current.getBeanDefinitionNames()) {
-				List<String> bean = new ArrayList<String>();
+				List<String> bean = new ArrayList<>();
 
 				// Bean Class
 				Class<?> type = current.getType(name);
@@ -169,7 +168,7 @@ public class ApplicationContextInfoController {
 			}
 
 			// Beans nach Klasse sortieren
-			List<String> keys = new ArrayList<String>(beans.keySet());
+			List<String> keys = new ArrayList<>(beans.keySet());
 			Collections.sort(keys);
 
 			for (String key : keys) {
