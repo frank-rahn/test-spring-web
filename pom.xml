@@ -6,11 +6,18 @@
   <packaging>war</packaging>
   <name>Test Spring Web</name>
   <description>Test Spring Web Anwendung</description>
+  <url>https://github.com/frank-rahn/test-spring-web</url>
 
   <organization>
   	<name>Frank W. Rahn</name>
   	<url>http://www.frank-rahn.de</url>
   </organization>
+
+  <scm>
+  	<url>https://github.com/frank-rahn/test-spring-web</url>
+  	<connection>scm:git:git://github.com/frank-rahn/test-spring-web.git</connection>
+  	<developerConnection>scm:git:git@github.com:frank-rahn/test-spring-web.git</developerConnection>
+  </scm>
 
   <build>
   	<sourceDirectory>src/java</sourceDirectory>
