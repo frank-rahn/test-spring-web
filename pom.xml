@@ -6,104 +6,57 @@
   <packaging>war</packaging>
   <name>Test Spring Web</name>
   <description>Test Spring Web Anwendung</description>
+  <url>https://github.com/frank-rahn/test-spring-web/tree/develop-spring-mit-restful-webservice</url>
 
   <organization>
   	<name>Frank W. Rahn</name>
   	<url>http://www.frank-rahn.de</url>
   </organization>
 
-  <build>
-  	<sourceDirectory>src/java</sourceDirectory>
-  	<testSourceDirectory>src/test</testSourceDirectory>
+  <scm>
+  	<url>https://github.com/frank-rahn/test-spring-web/tree/develop-spring-mit-restful-webservice</url>
+  	<connection>scm:git:git://github.com/frank-rahn/test-spring-web.git</connection>
+  	<developerConnection>scm:git:git@github.com:frank-rahn/test-spring-web.git</developerConnection>
+  </scm>
 
-  	<plugins>
-  		<plugin>
-  			<groupId>org.apache.maven.plugins</groupId>
-  			<artifactId>maven-compiler-plugin</artifactId>
-  			<version>2.3.2</version>
-  			<configuration>
-				<source>1.6</source>
-				<target>1.6</target>
-			</configuration>
-  		</plugin>
-  	</plugins>
-  </build>
+  <properties>
+  	<spring-version>3.1.2.RELEASE</spring-version>
+  	<aspectj-version>1.7.0</aspectj-version>
+  	<slf4j-version>1.7.1</slf4j-version>
+  </properties>
 
   <dependencies>
     <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-webmvc</artifactId>
-      <version>3.0.5.RELEASE</version>
-  		<exclusions>
-  			<exclusion>
-  				<artifactId>commons-logging</artifactId>
-  				<groupId>commons-logging</groupId>
-  			</exclusion>
-  		</exclusions>
+    	<groupId>org.springframework</groupId>
+    	<artifactId>spring-webmvc</artifactId>
+    	<version>${spring-version}</version>
+    	<exclusions>
+    		<exclusion>
+    			<artifactId>commons-logging</artifactId>
+    			<groupId>commons-logging</groupId>
+    		</exclusion>
+    	</exclusions>
     </dependency>
-  	<dependency>
-  		<groupId>org.springframework</groupId>
-  		<artifactId>spring-orm</artifactId>
-  		<version>3.0.5.RELEASE</version>
-  		<exclusions>
-  			<exclusion>
-  				<artifactId>commons-logging</artifactId>
-  				<groupId>commons-logging</groupId>
-  			</exclusion>
-  		</exclusions>
-  	</dependency>
     <dependency>
     	<groupId>org.springframework</groupId>
     	<artifactId>spring-test</artifactId>
-    	<version>3.0.5.RELEASE</version>
+    	<version>${spring-version}</version>
     	<scope>test</scope>
     </dependency>
     <dependency>
     	<groupId>org.aspectj</groupId>
     	<artifactId>aspectjweaver</artifactId>
-    	<version>1.6.11</version>
+    	<version>${aspectj-version}</version>
     </dependency>
     <dependency>
     	<groupId>org.aspectj</groupId>
     	<artifactId>aspectjrt</artifactId>
-    	<version>1.6.11</version>
+    	<version>${aspectj-version}</version>
     </dependency>
   	<dependency>
-  		<groupId>org.hibernate</groupId>
-  		<artifactId>hibernate-entitymanager</artifactId>
-  		<version>3.6.3.Final</version>
-  		<exclusions>
-  			<exclusion>
-  				<artifactId>slf4j-api</artifactId>
-  				<groupId>org.slf4j</groupId>
-  			</exclusion>
-  			<exclusion>
-  				<artifactId>xml-apis</artifactId>
-  				<groupId>xml-apis</groupId>
-  			</exclusion>
-  		</exclusions>
-  	</dependency>
-  	<dependency>
-  		<groupId>org.hibernate</groupId>
-  		<artifactId>hibernate-validator</artifactId>
-  		<version>4.1.0.Final</version>
-  		<exclusions>
-  			<exclusion>
-  				<artifactId>slf4j-api</artifactId>
-  				<groupId>org.slf4j</groupId>
-  			</exclusion>
-  		</exclusions>
-  	</dependency>
-  	<dependency>
-  		<groupId>org.hibernate.javax.persistence</groupId>
-  		<artifactId>hibernate-jpa-2.0-api</artifactId>
-  		<version>1.0.0.Final</version>
-  	</dependency>
-  	<dependency>
-  		<groupId>org.hibernate</groupId>
-  		<artifactId>hibernate-jpamodelgen</artifactId>
-  		<version>1.1.1.Final</version>
-  		<scope>provided</scope>
+  		<groupId>cglib</groupId>
+  		<artifactId>cglib</artifactId>
+  		<version>2.2.2</version>
   	</dependency>
     <dependency>
     	<groupId>javax.servlet</groupId>
@@ -113,40 +66,36 @@
     <dependency>
     	<groupId>org.slf4j</groupId>
     	<artifactId>jcl-over-slf4j</artifactId>
-    	<version>1.6.1</version>
+    	<version>${slf4j-version}</version>
     </dependency>
     <dependency>
     	<groupId>org.slf4j</groupId>
     	<artifactId>slf4j-log4j12</artifactId>
-    	<version>1.6.1</version>
+    	<version>${slf4j-version}</version>
     </dependency>
-  	<dependency>
-  		<groupId>org.hsqldb</groupId>
-  		<artifactId>hsqldb</artifactId>
-  		<version>2.0.0</version>
-  	</dependency>
-  	<dependency>
-  		<groupId>org.codehaus.jackson</groupId>
-  		<artifactId>jackson-mapper-lgpl</artifactId>
-  		<version>1.9.4</version>
-  	</dependency>
+	<dependency>
+		<groupId>org.hamcrest</groupId>
+		<artifactId>hamcrest-library</artifactId>
+		<version>1.1</version>
+		<scope>test</scope>
+	</dependency>
     <dependency>
     	<groupId>junit</groupId>
     	<artifactId>junit</artifactId>
-    	<version>4.8.2</version>
+    	<version>4.10</version>
     	<scope>test</scope>
+    	<exclusions>
+    		<exclusion>
+    			<artifactId>hamcrest-core</artifactId>
+    			<groupId>org.hamcrest</groupId>
+    		</exclusion>
+    	</exclusions>
     </dependency>
   	<dependency>
-  		<groupId>org.easymock</groupId>
-  		<artifactId>easymock</artifactId>
-  		<version>3.0</version>
+  		<groupId>org.mockito</groupId>
+  		<artifactId>mockito-core</artifactId>
+  		<version>1.9.0</version>
   		<scope>test</scope>
-  		<exclusions>
-  			<exclusion>
-  				<artifactId>cglib-nodep</artifactId>
-  				<groupId>cglib</groupId>
-  			</exclusion>
-  		</exclusions>
   	</dependency>
   </dependencies>
 

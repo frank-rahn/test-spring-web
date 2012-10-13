@@ -155,7 +155,7 @@ public class DriversController {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setLocation(new UriTemplate(baseUrl).expand(driver.getId()));
 
-		return new ResponseEntity<Driver>(driver, headers, HttpStatus.CREATED);
+		return new ResponseEntity<>(driver, headers, HttpStatus.CREATED);
 	}
 
 	/**

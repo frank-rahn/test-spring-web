@@ -43,9 +43,9 @@ public class DriverController {
 
 		Driver driver = drivers.getDriver(id);
 		if (driver == null) {
-			return new ResponseEntity<Driver>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<Driver>(driver, HttpStatus.OK);
+		return new ResponseEntity<>(driver, HttpStatus.OK);
 	}
 
 	/**
@@ -64,7 +64,7 @@ public class DriverController {
 
 		if (driver.getId() != null && !driver.getId().equals(id)) {
 			// URI und Fahrer stimmen nicht überein => 409 Conflict
-			return new ResponseEntity<Driver>(HttpStatus.CONFLICT);
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		}
 
 		// Normaler Rückgabestatus
@@ -79,7 +79,7 @@ public class DriverController {
 		// Speichere den Fahrer
 		driver = drivers.save(driver);
 
-		return new ResponseEntity<Driver>(driver, status);
+		return new ResponseEntity<>(driver, status);
 	}
 
 	/**
