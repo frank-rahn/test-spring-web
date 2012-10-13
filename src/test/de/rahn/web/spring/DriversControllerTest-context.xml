@@ -4,7 +4,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="
 		http://www.springframework.org/schema/beans
-			http://www.springframework.org/schema/beans/spring-beans.xsd
+				http://www.springframework.org/schema/beans/spring-beans.xsd
 	">
 
 	<description>
@@ -12,7 +12,7 @@
 	</description>
 
 	<!-- Die Testbeans -->
-	<bean id="drivers" class="org.easymock.EasyMock" factory-method="createMock">
+	<bean id="drivers" class="org.mockito.Mockito" factory-method="mock">
 		<constructor-arg value="de.rahn.services.drivers.Drivers" />
 	</bean>
 	<bean class="de.rahn.web.spring.DriversController" />
