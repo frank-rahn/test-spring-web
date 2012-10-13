@@ -1,19 +1,17 @@
 package de.rahn.web.spring;
 
 import static junit.framework.Assert.assertEquals;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.reset;
-import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -60,20 +58,11 @@ public class DriversControllerTest {
 	}
 
 	/**
-	 * Diese Methode wird nach jedem Unit Test aufgerufen.
-	 */
-	@After
-	public void tearDown() {
-		reset(drivers);
-	}
-
-	/**
 	 * Test method for {@link DriversController#handleRequest(Long)}.
 	 */
 	@Test
 	public void testHandleRequest() {
-		expect(drivers.getDriver(driver.getId())).andReturn(driver);
-		replay(drivers);
+		given(drivers.getDriver(driver.getId())).willReturn(driver);
 
 		Driver testDriver = controller.handleRequest(null);
 		assertNotNull("Kein Fahrer geliefert", testDriver);
@@ -82,7 +71,6 @@ public class DriversControllerTest {
 		testDriver = controller.handleRequest(driver.getId());
 		assertNotNull("Kein Fahrer geliefert", testDriver);
 		assertSame("Die Ergebnisse sind unterschiedlich", driver, testDriver);
-		verify(drivers);
 	}
 
 	/**
@@ -90,14 +78,12 @@ public class DriversControllerTest {
 	 */
 	@Test
 	public void testListDriver() {
-		expect(drivers.getDrivers()).andReturn(listDriver);
-		replay(drivers);
+		given(drivers.getDrivers()).willReturn(listDriver);
 
 		List<Driver> testDrivers = controller.listDriver();
 		assertNotNull("Controller hat kein Ergebnis geliefert", testDrivers);
 		assertSame("Die Ergebnisse sind unterschiedlich", listDriver,
 			testDrivers);
-		verify(drivers);
 	}
 
 	/**
@@ -115,10 +101,11 @@ public class DriversControllerTest {
 	 */
 	@Test
 	public void testSaveDriver() {
-		expect(drivers.save(driver)).andReturn(driver);
-		expect(drivers.create(driver)).andReturn(1L);
-		expect(drivers.getDrivers()).andReturn(listDriver).times(2);
-		replay(drivers);
+		given(drivers.save(driver)).willReturn(driver);
+		given(drivers.create(driver)).willReturn(1L);
+		given(drivers.getDrivers()).willReturn(listDriver);
+
+		verify(drivers, times(1)).getDrivers();
 
 		Model model = new ExtendedModelMap();
 
@@ -129,6 +116,7 @@ public class DriversControllerTest {
 			testDrivers);
 		assertTrue("Die Variable für die Oberfläche ist nicht gefüllt",
 			model.containsAttribute("statusMessage"));
+		verify(drivers, times(2)).getDrivers();
 
 		driver.setId(null);
 		model = new ExtendedModelMap();
@@ -139,7 +127,7 @@ public class DriversControllerTest {
 			testDrivers);
 		assertTrue("Die Variable für die Oberfläche ist nicht gefüllt",
 			model.containsAttribute("statusMessage"));
-		verify(drivers);
+		verify(drivers, times(3)).getDrivers();
 	}
 
 	/**

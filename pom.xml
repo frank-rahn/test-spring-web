@@ -92,16 +92,10 @@
     	</exclusions>
     </dependency>
   	<dependency>
-  		<groupId>org.easymock</groupId>
-  		<artifactId>easymock</artifactId>
-  		<version>3.1</version>
+  		<groupId>org.mockito</groupId>
+  		<artifactId>mockito-core</artifactId>
+  		<version>1.9.0</version>
   		<scope>test</scope>
-  		<exclusions>
-  			<exclusion>
-  				<artifactId>cglib-nodep</artifactId>
-  				<groupId>cglib</groupId>
-  			</exclusion>
-  		</exclusions>
   	</dependency>
   </dependencies>
 
