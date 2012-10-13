@@ -1,19 +1,20 @@
 package de.rahn.web.spring;
 
-import static junit.framework.Assert.assertEquals;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.reset;
-import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.hasEntry;
+import static org.hamcrest.Matchers.hasKey;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.sameInstance;
+import static org.junit.Assert.assertThat;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -55,34 +56,32 @@ public class DriversControllerTest {
 		driver.setFirstname("Frank");
 		driver.setName("Rahn");
 
-		listDriver = new ArrayList<Driver>();
+		listDriver = new ArrayList<>();
 		listDriver.add(driver);
-	}
-
-	/**
-	 * Diese Methode wird nach jedem Unit Test aufgerufen.
-	 */
-	@After
-	public void tearDown() {
-		reset(drivers);
 	}
 
 	/**
 	 * Test method for {@link DriversController#handleRequest(Long)}.
 	 */
 	@Test
-	public void testHandleRequest() {
-		expect(drivers.getDriver(driver.getId())).andReturn(driver);
-		replay(drivers);
+	public void testHandleRequestWithoutId() {
+		given(drivers.getDriver(driver.getId())).willReturn(driver);
 
 		Driver testDriver = controller.handleRequest(null);
-		assertNotNull("Kein Fahrer geliefert", testDriver);
-		assertNull("Dieser Fahrer darf keine Id haben", testDriver.getId());
+		assertThat("Kein Fahrer geliefert", testDriver, notNullValue());
+		assertThat("Dieser Fahrer darf keine Id haben", testDriver.getId(),
+			nullValue());
+	}
 
-		testDriver = controller.handleRequest(driver.getId());
-		assertNotNull("Kein Fahrer geliefert", testDriver);
-		assertSame("Die Ergebnisse sind unterschiedlich", driver, testDriver);
-		verify(drivers);
+	/**
+	 * Test method for {@link DriversController#handleRequest(Long)}.
+	 */
+	@Test
+	public void testHandleRequestWithId() {
+		given(drivers.getDriver(driver.getId())).willReturn(driver);
+
+		Driver testDriver = controller.handleRequest(driver.getId());
+		assertThat(testDriver, sameInstance(driver));
 	}
 
 	/**
@@ -90,14 +89,11 @@ public class DriversControllerTest {
 	 */
 	@Test
 	public void testListDriver() {
-		expect(drivers.getDrivers()).andReturn(listDriver);
-		replay(drivers);
+		given(drivers.getDrivers()).willReturn(listDriver);
 
 		List<Driver> testDrivers = controller.listDriver();
-		assertNotNull("Controller hat kein Ergebnis geliefert", testDrivers);
-		assertSame("Die Ergebnisse sind unterschiedlich", listDriver,
-			testDrivers);
-		verify(drivers);
+		assertThat("Der Controller hat ein falsches Ergebnis geliefert",
+			testDrivers, sameInstance(listDriver));
 	}
 
 	/**
@@ -106,8 +102,7 @@ public class DriversControllerTest {
 	@Test
 	public void testEditDriver() {
 		String model = controller.editDriver(driver);
-		assertNotNull("Der Name der View ist nicht da", model);
-		assertEquals("Der Name der View ist nicht richtig", "edit", model);
+		assertThat("Der Name der View ist nicht richtig", model, is("edit"));
 	}
 
 	/**
@@ -115,49 +110,45 @@ public class DriversControllerTest {
 	 */
 	@Test
 	public void testSaveDriver() {
-		expect(drivers.save(driver)).andReturn(driver);
-		expect(drivers.create(driver)).andReturn(1L);
-		expect(drivers.getDrivers()).andReturn(listDriver).times(2);
-		replay(drivers);
-
-		Model model = new ExtendedModelMap();
+		given(drivers.save(driver)).willReturn(driver);
+		given(drivers.create(driver)).willReturn(1L);
+		given(drivers.getDrivers()).willReturn(listDriver);
 
 		// Ruft save() und getDrivers() auf
+		Model model = new ExtendedModelMap();
 		List<Driver> testDrivers = controller.saveDriver(driver, model);
-		assertNotNull("Controller hat kein Ergebnis geliefert", testDrivers);
-		assertSame("Die Ergebnisse sind unterschiedlich", listDriver,
-			testDrivers);
-		assertTrue("Die Variable für die Oberfläche ist nicht gefüllt",
-			model.containsAttribute("statusMessage"));
+		assertThat(testDrivers, sameInstance(listDriver));
+		assertThat("Die Variable für die Oberfläche ist nicht gefüllt",
+			model.asMap(), hasKey("statusMessage"));
+		verify(drivers, times(2)).getDrivers();
 
+		// Ruft create() und getDrivers() auf
 		driver.setId(null);
 		model = new ExtendedModelMap();
-		// Ruft create() und getDrivers() auf
 		testDrivers = controller.saveDriver(driver, model);
-		assertNotNull("Controller hat kein Ergebnis geliefert", testDrivers);
-		assertSame("Die Ergebnisse sind unterschiedlich", listDriver,
-			testDrivers);
-		assertTrue("Die Variable für die Oberfläche ist nicht gefüllt",
-			model.containsAttribute("statusMessage"));
-		verify(drivers);
+		assertThat(testDrivers, sameInstance(listDriver));
+		assertThat("Die Variable für die Oberfläche ist nicht gefüllt",
+			model.asMap(), hasKey("statusMessage"));
+		verify(drivers, times(3)).getDrivers();
 	}
 
 	/**
 	 * Test method for {@link DriversController#handleException(Exception)}.
 	 */
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testHandleException() {
 		NullPointerException exception = new NullPointerException("Test");
 		exception.fillInStackTrace();
 
 		ModelAndView modelAndView = controller.handleException(exception);
-		assertNotNull("Kein Model und View geliefert", modelAndView);
-		assertEquals("Viewname ist nicht richtig", "error",
-			modelAndView.getViewName());
-		assertEquals("Die Message ist nicht richtig", "Test", modelAndView
-			.getModelMap().get("message"));
-		assertTrue("Der Stacktrace fehlt", modelAndView.getModelMap()
-			.containsAttribute("stackTrace"));
+		assertThat("Kein Model und View geliefert", modelAndView,
+			notNullValue());
+		assertThat("Viewname ist nicht richtig", modelAndView.getViewName(),
+			is("error"));
+		assertThat("Die Attribute sind nicht richtig",
+			modelAndView.getModelMap(),
+			allOf(hasEntry("message", (Object) "Test"), hasKey("stackTrace")));
 	}
 
 }
