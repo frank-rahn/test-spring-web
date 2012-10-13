@@ -20,7 +20,7 @@ import org.springframework.web.context.WebApplicationContext;
  */
 @Controller
 @RequestMapping("/info")
-public class AppicationContextInfoController {
+public class ApplicationContextInfoController {
 
 	/**
 	 * Das Model für die Informationen über den {@link ApplicationContext}.
@@ -130,7 +130,7 @@ public class AppicationContextInfoController {
 	 */
 	@RequestMapping(method = RequestMethod.GET)
 	@ModelAttribute("appCtxs")
-	public List<AppCtx> showAppicationContextInfo() {
+	public List<AppCtx> showApplicationContextInfo() {
 		List<AppCtx> appCtxs = new ArrayList<>();
 		ApplicationContext current = applicationContext;
 
