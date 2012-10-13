@@ -1,23 +1,34 @@
 package de.rahn.web.spring;
 
 import static org.slf4j.LoggerFactory.getLogger;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.HEAD;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.util.UriTemplate;
 
 import de.rahn.services.drivers.Drivers;
 import de.rahn.services.drivers.entity.Driver;
@@ -63,11 +74,24 @@ public class DriversController {
 	 * Liste alle Fahrer auf.
 	 * @return die Liste der Fahrer
 	 */
-	@RequestMapping(method = RequestMethod.GET)
+	@RequestMapping(method = GET, produces = "text/html")
 	@ModelAttribute("drivers")
-	public List<Driver> listDriver() {
+	public List<Driver> listDriverForView() {
 		logger
-			.info("Die Methode DriversController.listDriver() wurde aufgerufen.");
+			.info("Die Methode DriversController.listDriverForView() wurde aufgerufen.");
+
+		return drivers.getDrivers();
+	}
+
+	/**
+	 * Liste alle Fahrer auf.
+	 * @return die Liste der Fahrer
+	 */
+	@RequestMapping(method = { GET, HEAD }, produces = "application/json")
+	@ResponseBody
+	public List<Driver> listDriverForService() {
+		logger
+			.info("Die Methode DriversController.listDriverForService() wurde aufgerufen.");
 
 		return drivers.getDrivers();
 	}
@@ -77,7 +101,7 @@ public class DriversController {
 	 * @param driver der aktuelle Fahrer
 	 * @return der Namen der View (default ist: "drivers/edit")
 	 */
-	@RequestMapping(value = "/edit", method = RequestMethod.GET)
+	@RequestMapping(value = "/edit", method = GET)
 	public String editDriver(Driver driver) {
 		logger
 			.info(
@@ -92,7 +116,8 @@ public class DriversController {
 	 * @param model das Modell
 	 * @return die Liste der Fahrer
 	 */
-	@RequestMapping(method = RequestMethod.POST)
+	@RequestMapping(method = POST,
+		consumes = "application/x-www-form-urlencoded")
 	@ModelAttribute("drivers")
 	public List<Driver> saveDriver(Driver driver, Model model) {
 		logger
@@ -114,11 +139,39 @@ public class DriversController {
 	}
 
 	/**
+	 * Speichere einen neuen Fahrer.
+	 * @param driver der neue Fahrer
+	 * @param request der aktuelle Request
+	 * @return der neue Fahrer
+	 */
+	@RequestMapping(method = POST, consumes = "application/*")
+	public ResponseEntity<Driver> saveDriver(@RequestBody Driver driver,
+		HttpServletRequest request) {
+		logger
+			.info(
+				"Die Methode DriversController.saveDriver() wurde mit aufgerufen. driver={}",
+				driver);
+
+		// Schreiben des Fahrers
+		drivers.create(driver);
+
+		String baseUrl =
+			String.format("%s://%s:%d%s/drivers/{id}", request.getScheme(),
+				request.getServerName(), request.getServerPort(),
+				request.getContextPath());
+		HttpHeaders headers = new HttpHeaders();
+		headers.setLocation(new UriTemplate(baseUrl).expand(driver.getId()));
+
+		return new ResponseEntity<>(driver, headers, HttpStatus.CREATED);
+	}
+
+	/**
 	 * Mit dieser Methode werden die Fehler angezeigt.
 	 * @param exception die Ausnahme zum Fehler
 	 * @return die Kombination aus Anzeige (View) und Daten (Model)
 	 */
 	@ExceptionHandler
+	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
 	public ModelAndView handleException(Exception exception) {
 		StringWriter writer = new StringWriter();
 		exception.printStackTrace(new PrintWriter(writer));

@@ -91,7 +91,7 @@ public class DriversControllerTest {
 	public void testListDriver() {
 		given(drivers.getDrivers()).willReturn(listDriver);
 
-		List<Driver> testDrivers = controller.listDriver();
+		List<Driver> testDrivers = controller.listDriverForView();
 		assertThat("Der Controller hat ein falsches Ergebnis geliefert",
 			testDrivers, sameInstance(listDriver));
 	}
