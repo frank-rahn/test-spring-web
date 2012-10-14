@@ -1,5 +1,5 @@
-test-spring-simple
-==================
+test-spring-web
+===============
 
 Zugehöriger Artikel [Spring mit RESTful Webservice](http://www.frank-rahn.de/spring-mit-restful-webservice.html "Spring mit RESTful Webservice bei Frank Rahn") bei [Frank Rahn](http://www.frank-rahn.de "Homepage von Frank Rahn").
 
