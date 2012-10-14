@@ -1,6 +1,9 @@
 package de.rahn.web.spring;
 
 import static org.slf4j.LoggerFactory.getLogger;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.HEAD;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -21,7 +24,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -72,7 +74,7 @@ public class DriversController {
 	 * Liste alle Fahrer auf.
 	 * @return die Liste der Fahrer
 	 */
-	@RequestMapping(method = RequestMethod.GET, headers = "Accept=text/*")
+	@RequestMapping(method = GET, produces = "text/html")
 	@ModelAttribute("drivers")
 	public List<Driver> listDriverForView() {
 		logger
@@ -85,8 +87,7 @@ public class DriversController {
 	 * Liste alle Fahrer auf.
 	 * @return die Liste der Fahrer
 	 */
-	@RequestMapping(method = { RequestMethod.GET, RequestMethod.HEAD },
-		headers = "Accept=application/json")
+	@RequestMapping(method = { GET, HEAD }, produces = "application/json")
 	@ResponseBody
 	public List<Driver> listDriverForService() {
 		logger
@@ -100,7 +101,7 @@ public class DriversController {
 	 * @param driver der aktuelle Fahrer
 	 * @return der Namen der View (default ist: "drivers/edit")
 	 */
-	@RequestMapping(value = "/edit", method = RequestMethod.GET)
+	@RequestMapping(value = "/edit", method = GET)
 	public String editDriver(Driver driver) {
 		logger
 			.info(
@@ -115,8 +116,8 @@ public class DriversController {
 	 * @param model das Modell
 	 * @return die Liste der Fahrer
 	 */
-	@RequestMapping(method = RequestMethod.POST,
-		headers = "Content-Type=application/x-www-form-urlencoded")
+	@RequestMapping(method = POST,
+		consumes = "application/x-www-form-urlencoded")
 	@ModelAttribute("drivers")
 	public List<Driver> saveDriver(Driver driver, Model model) {
 		logger
@@ -143,8 +144,7 @@ public class DriversController {
 	 * @param request der aktuelle Request
 	 * @return der neue Fahrer
 	 */
-	@RequestMapping(method = RequestMethod.POST,
-		headers = "Content-Type=application/*")
+	@RequestMapping(method = POST, consumes = "application/*")
 	public ResponseEntity<Driver> saveDriver(@RequestBody Driver driver,
 		HttpServletRequest request) {
 		logger
@@ -162,7 +162,7 @@ public class DriversController {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setLocation(new UriTemplate(baseUrl).expand(driver.getId()));
 
-		return new ResponseEntity<Driver>(driver, headers, HttpStatus.CREATED);
+		return new ResponseEntity<>(driver, headers, HttpStatus.CREATED);
 	}
 
 	/**

@@ -1,8 +1,11 @@
 package de.rahn.web.spring;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.hasEntry;
+import static org.hamcrest.Matchers.hasKey;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertThat;
 
 import java.util.Map;
 
@@ -33,10 +36,8 @@ public class SampleControllerTest {
 		Model model = new ExtendedModelMap();
 		controller.sample(model);
 
-		assertTrue("Attribut counter fehlt",
-			model.asMap().containsKey("counter"));
-		assertEquals("Attribut counter falsch gesetzt", new Integer(1), model
-			.asMap().get("counter"));
+		assertThat("Attribut counter im ModelMap", model.asMap(),
+			hasEntry("counter", (Object) new Integer(1)));
 	}
 
 	/**
@@ -50,22 +51,21 @@ public class SampleControllerTest {
 	/**
 	 * Test method for {@link SampleController#handleException(Exception)} .
 	 */
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testHandleException() {
 		Exception exception = new Exception("Test");
 		exception.fillInStackTrace();
 
 		ModelAndView modelAndView = controller.handleException(exception);
+		assertThat("Keine Model & View zurückgeliefert", modelAndView,
+			notNullValue());
+		assertThat("Falscher View-Name", modelAndView.getViewName(),
+			is("error"));
 
-		assertNotNull("Keine Model & View zurückgeliefert", modelAndView);
-		assertEquals("Falscher View-Name", "error", modelAndView.getViewName());
 		Map<String, Object> model = modelAndView.getModel();
-		assertNotNull("Model ist nicht vorhanden", model);
-		assertNotNull("Meldung ist nicht vorhanden",
-			model.containsKey("message"));
-		assertEquals("Meldung ist falsch", "Test", model.get("message"));
-		assertNotNull("Stacktrace ist nicht vorhanden",
-			model.containsKey("stackTrace"));
+		assertThat("Meldung im Model", model,
+			allOf(hasEntry("message", (Object) "Test"), hasKey("stackTrace")));
 	}
 
 }
