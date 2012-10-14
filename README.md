@@ -1,5 +1,5 @@
-test-spring-simple
-==================
+test-spring-web
+===============
 
 Zugehöriger Artikel [Spring mit einer einfachen Webanwendung](http://www.frank-rahn.de/spring-mit-einer-einfachen-webanwendung.html "Spring mit einer einfachen Webanwendung bei Frank Rahn") bei [Frank Rahn](http://www.frank-rahn.de "Homepage von Frank Rahn").
 
