@@ -10,7 +10,7 @@
 
   <organization>
   	<name>Frank W. Rahn</name>
-  	<url>http://www.frank-rahn.de</url>
+  	<url>https://www.frank-rahn.de/</url>
   </organization>
 
   <scm>
@@ -144,7 +144,7 @@
 	  				<wtpContextName>test-spring-web</wtpContextName>
 	  				<wtpdefaultserver>Apache Tomcat v7.0</wtpdefaultserver>
 					<classpathContainers>
-						<classpathContainer>org.eclipse.jdt.launching.JRE_CONTAINER</classpathContainer>
+						<classpathContainer>org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7</classpathContainer>
 						<classpathContainer>org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/Apache Tomcat v7.0</classpathContainer>
 						<classpathContainer>org.eclipse.jst.j2ee.internal.web.container/artifact</classpathContainer>
 					</classpathContainers>
